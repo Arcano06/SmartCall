@@ -8,6 +8,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Timer = System.Windows.Forms.Timer;
+using System.Data.SqlClient;
+using SmartCall.Models;
+using BCrypt.Net;
+
 
 namespace SmartCall
 {
@@ -41,6 +45,81 @@ namespace SmartCall
             F_LB_TT();
         }
 
+        private bool ValidarLogin()
+        {
+            // 1. Pegue os dados dos TextBoxes (com .Trim())
+            string usuario = txtUsuario.Text.Trim(); // <<< MUDE AQUI (seu TextBox de email/usuario)
+            string senha = txtSenha.Text.Trim();     // <<< MUDE AQUI (seu TextBox de senha)
+
+            if (string.IsNullOrWhiteSpace(usuario) || string.IsNullOrWhiteSpace(senha))
+            {
+                MessageBox.Show("Por favor, preencha o usuário e a senha.", "Campos Vazios", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            try
+            {
+                // 2. Conecte ao banco usando o Contexto do EF
+                using (var db = new MeuProjetoDbContext())
+                {
+                    // 3. PRIMEIRO: Encontre o usuário APENAS pelo email
+                    //    (Usando .ToLower() para garantir)
+                    var usuarioDoBanco = db.Usuarios
+                        .FirstOrDefault(u => u.Email.ToLower() == usuario.ToLower());
+
+                    // 4. Verifique se o usuário existe
+                    if (usuarioDoBanco == null)
+                    {
+                        // Não encontrou o usuário (Email errado)
+                        MessageBox.Show("Usuário ou senha incorretos.", "Falha no Login", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return false;
+                    }
+
+                    // 5. SEGUNDO: Verifique a senha usando BCrypt.Verify
+                    //    Isso compara a "senha" (texto puro) com o "usuarioDoBanco.SenhaHash" (o hash $2a$...)
+
+                    bool senhaCorreta;
+                    try
+                    {
+                        // A classe se chama "BCrypt" e o método "Verify"
+                        senhaCorreta = BCrypt.Net.BCrypt.Verify(senha, usuarioDoBanco.SenhaHash);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Isso pode falhar se a senha no banco estiver em formato inválido
+                        MessageBox.Show("Erro ao verificar o hash da senha: " + ex.Message, "Erro de Hash", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return false;
+                    }
+
+
+                    if (!senhaCorreta)
+                    {
+                        // Senha errada
+                        MessageBox.Show("Usuário ou senha incorretos.", "Falha no Login", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return false;
+                    }
+
+                    // 6. TERCEIRO: Verifique o Cargo (ex: 2 = Admin)
+                    if (usuarioDoBanco.Cargo == 2)
+                    {
+                        return true; // SUCESSO! É admin e a senha está correta.
+                    }
+                    else
+                    {
+                        // Não é admin
+                        MessageBox.Show("Você não tem permissão de Administrador para acessar.", "Acesso Negado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Mostra qualquer erro de conexão ou de consulta
+                MessageBox.Show("Erro ao conectar ao banco de dados: " + ex.Message, "Erro de Conexão", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+        }
+
         private void label2_Click(object sender, EventArgs e)
         {
 
@@ -63,9 +142,27 @@ namespace SmartCall
 
         private void BT_Tasks_Click(object sender, EventArgs e)
         {
-                Scala1 = true;
-                Update2.Enabled = true;
-                Update2.Start();           
+            if (BT_Tasks.Text == "Login")
+            {
+                if (ValidarLogin())
+                {
+                    Scala1 = true;
+            Update2.Enabled = true;
+            Update2.Start();
+                }
+                    else
+                    {
+                        // Falha no login ou permissão. A função ValidarLogin()
+                        // já exibiu a mensagem de erro específica.
+                    }
+                }
+                else
+                {
+                    // Aqui você pode adicionar a lógica para "Atualizar", "Deletar", "Adicionar"
+                    // quando implementar essas funções.
+                    // Por exemplo:
+                    // if (BT_Tasks.Text == "Adicionar") { ... }
+                }
         }
 
         private void PI_FH_Click(object sender, EventArgs e)

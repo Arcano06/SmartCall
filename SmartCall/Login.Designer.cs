@@ -31,16 +31,17 @@ namespace SmartCall
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Login));
             panel1 = new Panel();
+            LB_FH = new Label();
             panel2 = new Panel();
             panel5 = new Panel();
             BT_Tasks = new Button();
-            textBox3 = new TextBox();
+            txtSenha = new TextBox();
             label6 = new Label();
             panel4 = new Panel();
             panel3 = new Panel();
             pictureBox1 = new PictureBox();
             LB_TT = new Label();
-            textBox1 = new TextBox();
+            txtUsuario = new TextBox();
             label2 = new Label();
             panel6 = new Panel();
             PI_FH = new PictureBox();
@@ -64,7 +65,6 @@ namespace SmartCall
             panel9 = new Panel();
             pictureBox4 = new PictureBox();
             textBox2 = new TextBox();
-            LB_FH = new Label();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             panel3.SuspendLayout();
@@ -92,16 +92,28 @@ namespace SmartCall
             panel1.Size = new Size(350, 700);
             panel1.TabIndex = 0;
             // 
+            // LB_FH
+            // 
+            LB_FH.AutoSize = true;
+            LB_FH.Font = new Font("Verdana", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            LB_FH.ForeColor = Color.Crimson;
+            LB_FH.Location = new Point(318, 9);
+            LB_FH.Name = "LB_FH";
+            LB_FH.Size = new Size(26, 25);
+            LB_FH.TabIndex = 10;
+            LB_FH.Text = "X";
+            LB_FH.Click += LB_FH_Click;
+            // 
             // panel2
             // 
             panel2.Controls.Add(panel5);
             panel2.Controls.Add(BT_Tasks);
-            panel2.Controls.Add(textBox3);
+            panel2.Controls.Add(txtSenha);
             panel2.Controls.Add(label6);
             panel2.Controls.Add(panel4);
             panel2.Controls.Add(panel3);
             panel2.Controls.Add(LB_TT);
-            panel2.Controls.Add(textBox1);
+            panel2.Controls.Add(txtUsuario);
             panel2.Controls.Add(label2);
             panel2.Location = new Point(30, 50);
             panel2.Name = "panel2";
@@ -130,15 +142,15 @@ namespace SmartCall
             BT_Tasks.UseVisualStyleBackColor = false;
             BT_Tasks.Click += BT_Tasks_Click;
             // 
-            // textBox3
+            // txtSenha
             // 
-            textBox3.BackColor = SystemColors.GrayText;
-            textBox3.BorderStyle = BorderStyle.None;
-            textBox3.Location = new Point(39, 395);
-            textBox3.Name = "textBox3";
-            textBox3.PasswordChar = '*';
-            textBox3.Size = new Size(200, 20);
-            textBox3.TabIndex = 11;
+            txtSenha.BackColor = SystemColors.GrayText;
+            txtSenha.BorderStyle = BorderStyle.None;
+            txtSenha.Location = new Point(39, 395);
+            txtSenha.Name = "txtSenha";
+            txtSenha.PasswordChar = '*';
+            txtSenha.Size = new Size(200, 20);
+            txtSenha.TabIndex = 11;
             // 
             // label6
             // 
@@ -190,14 +202,14 @@ namespace SmartCall
             LB_TT.Text = "SmartCall Login";
             LB_TT.Click += label1_Click;
             // 
-            // textBox1
+            // txtUsuario
             // 
-            textBox1.BackColor = SystemColors.GrayText;
-            textBox1.BorderStyle = BorderStyle.None;
-            textBox1.Location = new Point(39, 317);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(200, 20);
-            textBox1.TabIndex = 2;
+            txtUsuario.BackColor = SystemColors.GrayText;
+            txtUsuario.BorderStyle = BorderStyle.None;
+            txtUsuario.Location = new Point(39, 317);
+            txtUsuario.Name = "txtUsuario";
+            txtUsuario.Size = new Size(200, 20);
+            txtUsuario.TabIndex = 2;
             // 
             // label2
             // 
@@ -452,18 +464,6 @@ namespace SmartCall
             textBox2.Size = new Size(200, 20);
             textBox2.TabIndex = 11;
             // 
-            // LB_FH
-            // 
-            LB_FH.AutoSize = true;
-            LB_FH.Font = new Font("Verdana", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            LB_FH.ForeColor = Color.Crimson;
-            LB_FH.Location = new Point(318, 9);
-            LB_FH.Name = "LB_FH";
-            LB_FH.Size = new Size(26, 25);
-            LB_FH.TabIndex = 10;
-            LB_FH.Text = "X";
-            LB_FH.Click += LB_FH_Click;
-            // 
             // Login
             // 
             AutoScaleDimensions = new SizeF(10F, 18F);
@@ -526,7 +526,7 @@ namespace SmartCall
 
         private Panel panel1;
         private Label LB_TT;
-        private TextBox textBox1;
+        private TextBox txtUsuario;
         private Label label2;
         private PictureBox pictureBox1;
         private Button BT_Tasks;
@@ -534,7 +534,7 @@ namespace SmartCall
         private Panel panel3;
         private Panel panel4;
         private Panel panel5;
-        private TextBox textBox3;
+        private TextBox txtSenha;
         private Label label6;
         private Panel panel6;
         private Panel panel7;
