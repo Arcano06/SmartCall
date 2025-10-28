@@ -237,18 +237,18 @@ namespace SmartCall
                     break;
 
                 case " Editar Usuário":
-                    BT_Tasks.Show();
-                    BT_Tasks.Text = "Atualizar";
+                    BT_Tasks.Hide();
+                    BT_Tasks.Text = "";
                     break;
 
                 case "Eliminar Usuário":
-                    BT_Tasks.Show();
-                    BT_Tasks.Text = "Deletar";
+                    BT_Tasks.Hide();
+                    BT_Tasks.Text = "";
                     break;
 
                 case "Novo Usuário":
-                    BT_Tasks.Show();
-                    BT_Tasks.Text = "Adicionar";
+                    BT_Tasks.Hide();
+                    BT_Tasks.Text = "";
                     break;
 
                 case "Usuário":

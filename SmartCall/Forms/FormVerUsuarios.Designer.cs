@@ -28,32 +28,38 @@
         /// </summary>
         private void InitializeComponent()
         {
-            listBox1 = new ListBox();
+            dgvUsuarios = new DataGridView();
+            ((System.ComponentModel.ISupportInitialize)dgvUsuarios).BeginInit();
             SuspendLayout();
             // 
-            // listBox1
+            // dgvUsuarios
             // 
-            listBox1.FormattingEnabled = true;
-            listBox1.Location = new Point(1, -1);
-            listBox1.Name = "listBox1";
-            listBox1.Size = new Size(404, 199);
-            listBox1.TabIndex = 0;
-            listBox1.SelectedIndexChanged += listBox1_SelectedIndexChanged;
+            dgvUsuarios.AllowUserToAddRows = false;
+            dgvUsuarios.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvUsuarios.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvUsuarios.Dock = DockStyle.Fill;
+            dgvUsuarios.Location = new Point(0, 0);
+            dgvUsuarios.Name = "dgvUsuarios";
+            dgvUsuarios.ReadOnly = true;
+            dgvUsuarios.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvUsuarios.Size = new Size(800, 450);
+            dgvUsuarios.TabIndex = 0;
             // 
             // FormVerUsuarios
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(846, 357);
-            Controls.Add(listBox1);
-            FormBorderStyle = FormBorderStyle.None;
+            ClientSize = new Size(800, 450);
+            Controls.Add(dgvUsuarios);
             Name = "FormVerUsuarios";
-            Text = "Usuario";
+            Text = "FormVerUsuarios";
+            Load += FormVerUsuarios_Load_1;
+            ((System.ComponentModel.ISupportInitialize)dgvUsuarios).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
 
-        private ListBox listBox1;
+        private DataGridView dgvUsuarios;
     }
 }
