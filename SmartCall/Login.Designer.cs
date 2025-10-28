@@ -91,6 +91,7 @@ namespace SmartCall
             panel1.Name = "panel1";
             panel1.Size = new Size(350, 700);
             panel1.TabIndex = 0;
+            panel1.MouseDown += Formulario_MouseDown_Para_Arrastar;
             // 
             // LB_FH
             // 
@@ -231,6 +232,7 @@ namespace SmartCall
             panel6.Name = "panel6";
             panel6.Size = new Size(854, 35);
             panel6.TabIndex = 1;
+            panel6.MouseDown += Formulario_MouseDown_Para_Arrastar;
             // 
             // PI_FH
             // 
@@ -256,6 +258,7 @@ namespace SmartCall
             panel7.Name = "panel7";
             panel7.Size = new Size(854, 262);
             panel7.TabIndex = 2;
+            panel7.MouseDown += Formulario_MouseDown_Para_Arrastar;
             // 
             // pictureBox2
             // 
@@ -266,6 +269,7 @@ namespace SmartCall
             pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox2.TabIndex = 7;
             pictureBox2.TabStop = false;
+            pictureBox2.MouseDown += Formulario_MouseDown_Para_Arrastar;
             // 
             // label4
             // 
@@ -335,6 +339,7 @@ namespace SmartCall
             label10.Size = new Size(68, 18);
             label10.TabIndex = 10;
             label10.Text = "Deletar";
+            label10.Click += label10_Click;
             // 
             // label9
             // 
@@ -345,6 +350,7 @@ namespace SmartCall
             label9.Size = new Size(56, 18);
             label9.TabIndex = 13;
             label9.Text = "Editar";
+            label9.Click += label9_Click;
             // 
             // pictureBox8
             // 
@@ -406,6 +412,7 @@ namespace SmartCall
             label7.Size = new Size(70, 18);
             label7.TabIndex = 4;
             label7.Text = "Usuário";
+            label7.Click += label7_Click;
             // 
             // pictureBox5
             // 
@@ -476,11 +483,14 @@ namespace SmartCall
             Controls.Add(panel1);
             Font = new Font("Verdana", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             FormBorderStyle = FormBorderStyle.None;
+            IsMdiContainer = true;
             Margin = new Padding(4);
             Name = "Login";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Form1";
             Load += Login_Load;
+            MouseDown += Formulario_MouseDown_Para_Arrastar;
+            Resize += Login_Resize;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             panel2.ResumeLayout(false);

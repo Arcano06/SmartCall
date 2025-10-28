@@ -1,16 +1,18 @@
+using BCrypt.Net;
+using SmartCall.Forms;
+using SmartCall.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Timer = System.Windows.Forms.Timer;
-using System.Data.SqlClient;
-using SmartCall.Models;
-using BCrypt.Net;
+using System.Runtime.InteropServices;
 
 
 namespace SmartCall
@@ -21,6 +23,7 @@ namespace SmartCall
         private Timer Update2 = new Timer();
         private bool Scala1, Scala2;
         private int _Font = 350;
+        private Form formAtivo = null;
         public Login()
         {
             InitializeComponent();
@@ -33,6 +36,26 @@ namespace SmartCall
             Update2.Interval = 1;
             Update2.Tick += Update2_Tick;
             this.Size = new Size(_Font, 700);
+        }
+
+        public const int WM_NCLBUTTONDOWN = 0xA1;
+        public const int HT_CAPTION = 0x2;
+
+        [DllImport("user32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+        [DllImport("user32.dll")]
+        public static extern bool ReleaseCapture();
+
+        private void Formulario_MouseDown_Para_Arrastar(object sender, MouseEventArgs e)
+        {
+            // Verifica se foi o botão esquerdo do mouse
+            if (e.Button == MouseButtons.Left)
+            {
+                ReleaseCapture(); // Libera a captura do mouse
+                                  // Envia a mensagem para o Windows de que o botão esquerdo foi pressionado
+                                  // na "barra de título" (HT_CAPTION)
+                SendMessage(this.Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+            }
         }
 
         private void Update2_Tick(object? sender, EventArgs e)
@@ -147,22 +170,22 @@ namespace SmartCall
                 if (ValidarLogin())
                 {
                     Scala1 = true;
-            Update2.Enabled = true;
-            Update2.Start();
-                }
-                    else
-                    {
-                        // Falha no login ou permissão. A função ValidarLogin()
-                        // já exibiu a mensagem de erro específica.
-                    }
+                    Update2.Enabled = true;
+                    Update2.Start();
                 }
                 else
                 {
-                    // Aqui você pode adicionar a lógica para "Atualizar", "Deletar", "Adicionar"
-                    // quando implementar essas funções.
-                    // Por exemplo:
-                    // if (BT_Tasks.Text == "Adicionar") { ... }
+                    // Falha no login ou permissão. A função ValidarLogin()
+                    // já exibiu a mensagem de erro específica.
                 }
+            }
+            else
+            {
+                // Aqui você pode adicionar a lógica para "Atualizar", "Deletar", "Adicionar"
+                // quando implementar essas funções.
+                // Por exemplo:
+                // if (BT_Tasks.Text == "Adicionar") { ... }
+            }
         }
 
         private void PI_FH_Click(object sender, EventArgs e)
@@ -175,26 +198,31 @@ namespace SmartCall
         private void pictureBox5_Click(object sender, EventArgs e)
         {
             LB_TT.Text = "Usuário";
+            AbrirFormularioFilho(new FormVerUsuarios());
         }
 
         private void label8_Click(object sender, EventArgs e)
         {
-
+            LB_TT.Text = "Novo Usuário";
+            AbrirFormularioFilho(new FormAdicionarUsuario());
         }
 
         private void pictureBox7_Click(object sender, EventArgs e)
         {
             LB_TT.Text = " Editar Usuário";
+            AbrirFormularioFilho(new FormEditarUsuario());
         }
 
         private void pictureBox8_Click(object sender, EventArgs e)
         {
             LB_TT.Text = "Eliminar Usuário";
+            AbrirFormularioFilho(new FormDeletarUsuario());
         }
 
         private void pictureBox6_Click_1(object sender, EventArgs e)
         {
             LB_TT.Text = "Novo Usuário";
+            AbrirFormularioFilho(new FormAdicionarUsuario());
         }
 
 
@@ -270,7 +298,7 @@ namespace SmartCall
                         _Font = 350;
                     }
 
-                    this.Size = new Size(_Font, 700);  
+                    this.Size = new Size(_Font, 700);
                     if (_Font <= 350)
                     {
                         this.Close();
@@ -288,9 +316,112 @@ namespace SmartCall
 
         }
 
+        private void AbrirFormularioFilho(Form formularioFilho)
+        {
+            if (formAtivo != null && formAtivo.GetType() == formularioFilho.GetType())
+            {
+                formAtivo.BringToFront();
+                formularioFilho.Dispose();
+                return;
+            }
+
+            if (formAtivo != null)
+            {
+                formAtivo.Close();
+            }
+
+            formAtivo = formularioFilho;
+
+            formAtivo.MdiParent = this;
+
+            formAtivo.FormClosed += (s, args) => formAtivo = null;
+
+            formAtivo.FormBorderStyle = FormBorderStyle.None;
+
+            formAtivo.Dock = DockStyle.Fill;
+
+            formAtivo.Show();
+        }
+
         private void LB_FH_Click(object sender, EventArgs e)
         {
             this.Close();
         }
+
+        private void label7_Click(object sender, EventArgs e)
+        {
+            LB_TT.Text = "Usuário";
+            AbrirFormularioFilho(new FormVerUsuarios());
+        }
+
+        private void label10_Click(object sender, EventArgs e)
+        {
+            LB_TT.Text = "Eliminar Usuário";
+            AbrirFormularioFilho(new FormDeletarUsuario());
+        }
+
+        private void label9_Click(object sender, EventArgs e)
+        {
+            LB_TT.Text = " Editar Usuário";
+            AbrirFormularioFilho(new FormEditarUsuario());
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            // Mensagem do Windows: WM_NCHITTEST (Enviada quando o mouse se move)
+            const int WM_NCHITTEST = 0x84;
+
+            // Resultados do Hit Test (onde o mouse está)
+            const int HTCLIENT = 1;     // Na área "cliente" (normal)
+            const int HTLEFT = 10;      // Borda esquerda
+            const int HTRIGHT = 11;     // Borda direita
+            const int HTTOP = 12;       // Borda superior
+            const int HTTOPLEFT = 13;   // Canto superior esquerdo
+            const int HTTOPRIGHT = 14;  // Canto superior direito
+            const int HTBOTTOM = 15;    // Borda inferior
+            const int HTBOTTOMLEFT = 16;// Canto inferior esquerdo
+            const int HTBOTTOMRIGHT = 17;// Canto inferior direito
+
+            base.WndProc(ref m); // Processa a mensagem primeiro
+
+            if (m.Msg == WM_NCHITTEST && (int)m.Result == HTCLIENT)
+            {
+                // Obtém as coordenadas do mouse em relação à tela
+                Point screenPoint = new Point(m.LParam.ToInt32());
+                // Converte para coordenadas em relação ao formulário
+                Point clientPoint = this.PointToClient(screenPoint);
+
+                // Define a "largura" da borda para redimensionar (ex: 10 pixels)
+                int gripSize = 10;
+
+                // Lógica para os 4 cantos
+                if (clientPoint.X <= gripSize && clientPoint.Y <= gripSize)
+                    m.Result = (IntPtr)HTTOPLEFT;
+                else if (clientPoint.X >= this.ClientSize.Width - gripSize && clientPoint.Y <= gripSize)
+                    m.Result = (IntPtr)HTTOPRIGHT;
+                else if (clientPoint.X <= gripSize && clientPoint.Y >= this.ClientSize.Height - gripSize)
+                    m.Result = (IntPtr)HTBOTTOMLEFT;
+                else if (clientPoint.X >= this.ClientSize.Width - gripSize && clientPoint.Y >= this.ClientSize.Height - gripSize)
+                    m.Result = (IntPtr)HTBOTTOMRIGHT;
+                // Lógica para as 4 bordas
+                else if (clientPoint.X <= gripSize)
+                    m.Result = (IntPtr)HTLEFT;
+                else if (clientPoint.X >= this.ClientSize.Width - gripSize)
+                    m.Result = (IntPtr)HTRIGHT;
+                else if (clientPoint.Y <= gripSize)
+                    m.Result = (IntPtr)HTTOP;
+                else if (clientPoint.Y >= this.ClientSize.Height - gripSize)
+                    m.Result = (IntPtr)HTBOTTOM;
+            }
+        }
+
+        private void Login_Resize(object sender, EventArgs e)
+        {
+            if (!Scala1 && !Scala2)
+            {
+                _Font = this.Width;
+            }
+        }
     }
+
 }
