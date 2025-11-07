@@ -62,9 +62,6 @@ namespace SmartCall
             pictureBox5 = new PictureBox();
             panel11 = new Panel();
             panel10 = new Panel();
-            panel9 = new Panel();
-            pictureBox4 = new PictureBox();
-            textBox2 = new TextBox();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             panel3.SuspendLayout();
@@ -78,7 +75,6 @@ namespace SmartCall
             ((System.ComponentModel.ISupportInitialize)pictureBox8).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox7).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
             SuspendLayout();
             // 
             // panel1
@@ -308,9 +304,6 @@ namespace SmartCall
             panel8.Controls.Add(pictureBox5);
             panel8.Controls.Add(panel11);
             panel8.Controls.Add(panel10);
-            panel8.Controls.Add(panel9);
-            panel8.Controls.Add(pictureBox4);
-            panel8.Controls.Add(textBox2);
             panel8.Dock = DockStyle.Top;
             panel8.Location = new Point(350, 297);
             panel8.Name = "panel8";
@@ -443,34 +436,6 @@ namespace SmartCall
             panel10.Size = new Size(5, 34);
             panel10.TabIndex = 4;
             // 
-            // panel9
-            // 
-            panel9.BackColor = Color.Navy;
-            panel9.Location = new Point(41, 24);
-            panel9.Name = "panel9";
-            panel9.Size = new Size(200, 4);
-            panel9.TabIndex = 12;
-            // 
-            // pictureBox4
-            // 
-            pictureBox4.BackColor = Color.Black;
-            pictureBox4.Image = (Image)resources.GetObject("pictureBox4.Image");
-            pictureBox4.Location = new Point(0, 0);
-            pictureBox4.Name = "pictureBox4";
-            pictureBox4.Size = new Size(35, 35);
-            pictureBox4.SizeMode = PictureBoxSizeMode.Zoom;
-            pictureBox4.TabIndex = 8;
-            pictureBox4.TabStop = false;
-            // 
-            // textBox2
-            // 
-            textBox2.BackColor = SystemColors.GrayText;
-            textBox2.BorderStyle = BorderStyle.None;
-            textBox2.Location = new Point(41, 8);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(200, 20);
-            textBox2.TabIndex = 11;
-            // 
             // Login
             // 
             AutoScaleDimensions = new SizeF(10F, 18F);
@@ -508,7 +473,6 @@ namespace SmartCall
             ((System.ComponentModel.ISupportInitialize)pictureBox8).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox7).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
             ResumeLayout(false);
         }
 
@@ -553,9 +517,6 @@ namespace SmartCall
         private Label label4;
         private PictureBox pictureBox2;
         private PictureBox PI_FH;
-        private PictureBox pictureBox4;
-        private Panel panel9;
-        private TextBox textBox2;
         private Panel panel10;
         private PictureBox pictureBox5;
         private Label label7;
